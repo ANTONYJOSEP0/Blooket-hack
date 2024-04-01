@@ -36,4 +36,3 @@ Note: Please use cheats responsibly and ethically. It is not our responsibility 
 ## Contact
 
 If you have any questions or need assistance, you can reach out on they  Discord: [Link to Discord Server](https://discord.com/invite/jHjGrrdXP6)
-![Screenshot](https://raw.githubusercontent.com/ANTONYJOSEP0/Blooket-hack/main/Screenshot%20(143).png)
