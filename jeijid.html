@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Robot</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    /* Adjust the size and style of the robot image */
+    .robot-img {
+        width: 150px;
+        height: 150px;
+    }
+    .color-button {
+        margin: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    #musicPlayer {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <!-- Replace the robot emoji with a robot image from a URL -->
+        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fsbcobbstor.blob.core.windows.net%2Fmedia%2FWWWCobb%2Fpgg%2F5%2FTatum%2520Educator%2520of%2520the%2520Month.jpg&f=1&nofb=1&ipt=c0704814fde65bdad95a16e92461ee0ecf80be7bc288bdded93190c78caaa2d3&ipo=images" alt="Friendly Robot" class="robot-img">
+        <p>Hello, I'm a friendly robot made by Elia Marroquin!</p>
+        <button onclick="askQuestion()">Ask a math question</button>
+        <button onclick="startSimonSays()">Start Simon Says</button>
+        <button onclick="playMusic()">Play Music</button>
+        <button onclick="stopMusic()">Stop Music</button>
+        <p id="response"></p>
+        <div id="simonSaysButtons"></div>
+        <div id="musicPlayer"></div>
+        
+        <!-- Proxy-like feature for fetching website content -->
+        <input type="text" id="urlInput" placeholder="Enter website URL...">
+        <button onclick="fetchWebsite()">Fetch Website Content</button>
+        <div id="proxyContent"></div>
+    <script>
+        var simonSequence = []; // Array to store Simon Says sequence
+        var userSequence = []; // Array to store user's input sequence
+        var simonTurn = false; // Flag to track Simon's turn
+        var colors = ["red", "green", "blue", "yellow"]; // Colors for Simon Says buttons
+        var level = 1; // Initial level
+
+        function askQuestion() {
+            var question = prompt("Ask me a math question (e.g., What is 2 + 3?):");
+            var responseElement = document.getElementById("response");
+            if (question) {
+                var response = generateResponse(question);
+                responseElement.textContent = response;
+            }
+        }
+
+        function startSimonSays() {
+            if (level <= 100) {
+                simonSequence = []; // Clear previous sequence
+                userSequence = []; // Clear user's sequence
+                generateSimonSequence();
+                saySimonSays();
+                displaySimonSaysButtons();
+            } else {
+                alert("Congratulations! You've reached level 100!");
+            }
+        }
+
+        function generateSimonSequence() {
+            // Generate a random sequence of actions for Simon Says based on the current level
+            var sequenceLength = level < 10 ? level + 1 : 10; // Maximum sequence length capped at 10
+            for (var i = 0; i < sequenceLength; i++) {
+                var randomIndex = Math.floor(Math.random() * colors.length);
+                simonSequence.push(colors[randomIndex]);
+            }
+        }
+
+        function saySimonSays() {
+            // Say "Simon says" followed by the sequence of actions
+            var simonSays = "Simon says: ";
+            for (var i = 0; i < simonSequence.length; i++) {
+                simonSays += simonSequence[i] + ", ";
+            }
+            alert(simonSays);
+            simonTurn = true; // Simon's turn to play
+        }
+
+        function displaySimonSaysButtons() {
+            var simonSaysButtonsDiv = document.getElementById("simonSaysButtons");
+            simonSaysButtonsDiv.innerHTML = ""; // Clear previous buttons
+            for (var i = 0; i < colors.length; i++) {
+                var colorButton = document.createElement("button");
+                colorButton.textContent = colors[i];
+                colorButton.className = "color-button";
+                colorButton.style.backgroundColor = colors[i];
+                colorButton.onclick = function() {
+                    if (simonTurn) {
+                        var color = this.textContent;
+                        checkUserInput(color);
+                    }
+                };
+                simonSaysButtonsDiv.appendChild(colorButton);
+            }
+        }
+
+        function checkUserInput(color) {
+            var expectedColor = simonSequence[userSequence.length];
+            if (color === expectedColor) {
+                userSequence.push(color);
+                if (userSequence.length === simonSequence.length) {
+                    // User successfully repeated Simon's sequence
+                    level++;
+                    alert("Congratulations! Level " + level + " achieved!");
+                    startSimonSays(); // Start the next round
+                }
+            } else {
+                // User pressed the wrong button during Simon's turn
+                if (simonTurn) {
+                    alert("Oops! Simon didn't say that. You lost!");
+                    simonTurn = false; // End the game
+                    level = 1; // Reset level to 1 for a new game
+                }
+            }
+        }
+
+        function generateResponse(question) {
+            var mathRegex = /what is (\d+) (\+|-|\*|\/) (\d+)\?/i;
+            var match = mathRegex.exec(question);
+            if (match) {
+                var num1 = parseInt(match[1]);
+                var operator = match[2];
+                var num2 = parseInt(match[3]);
+                var result;
+                switch (operator) {
+                    case '+':
+                        result = num1 + num2;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        break;
+                    case '*':
+                        result = num1 * num2;
+                        break;
+                    case '/':
+                        result = num1 / num2;
+                        break;
+                    default:
+                        result = "I'm sorry, I'm not sure how to calculate that.";
+                }
+                return "The result of " + num1 + " " + operator + " " + num2 + " is " + result + ".";
+            } else {
+                return "I'm sorry, I didn't understand the question. Please ask a math question like 'What is 2 + 3?'";
+            }
+        }
+
+        function playMusic() {
+            var musicPlayerDiv = document.getElementById("musicPlayer");
+            musicPlayerDiv.innerHTML = '<iframe width="560" height="315" src="https://www.youtube.com/embed/?autoplay=1" frameborder="0" allowfullscreen></iframe>';
+        }
+
+        function stopMusic() {
+            var musicPlayerDiv = document.getElementById("musicPlayer");
+            musicPlayerDiv.innerHTML = '';
+        }
+
+        async function fetchWebsite() {
+            var url = document.getElementById("urlInput").value;
+            if (isValidUrl(url)) {
+                try {
+                    var proxyContentDiv = document.getElementById("proxyContent");
+                    proxyContentDiv.innerHTML = 'Loading...';
+                    var proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(url);
+                    var response = await fetch(proxyUrl);
+                    var data = await response.json();
+                    displayWebsiteContent(data.contents);
+                } catch (error) {
+                    console.error('Error fetching website:', error);
+                    proxyContentDiv.innerHTML = 'Error fetching website.';
+                }
+            } else {
+                alert("Please enter a valid website URL.");
+            }
+        }
+
+        function isValidUrl(url) {
+            // Simple URL validation using a regular expression
+            var urlPattern = /^(http|https):\/\/[^ "]+$/;
+            return urlPattern.test(url);
+        }
+
+        function displayWebsiteContent(content) {
+            var proxyContentDiv = document.getElementById("proxyContent");
+            proxyContentDiv.innerHTML = content;
+        }
+    </script>
+</body>
+</html>
