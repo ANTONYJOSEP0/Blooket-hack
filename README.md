@@ -35,4 +35,24 @@ Note: Please use cheats responsibly and ethically. It is not our responsibility 
 
 ## Contact
 
-If you have any questions or need assistance, you can reach out on they  Discord: [Link to Discord Server](https://discord.com/invite/jHjGrrdXP6)
+If you have any questions or need assistance, you can reach out on they  Discord: [Link to Discord Server](https://discord.com/invite/jHjGrrdXP6).
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+ 
+    
+# No Reason
+</head>
+<body>
+    <div class="container">
+        <!-- Replace the robot emoji with a robot image from a URL -->
+        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fsbcobbstor.blob.core.windows.net%2Fmedia%2FWWWCobb%2Fpgg%2F5%2FTatum%2520Educator%2520of%2520the%2520Month.jpg&f=1&nofb=1&ipt=c0704814fde65bdad95a16e92461ee0ecf80be7bc288bdded93190c78caaa2d3&ipo=images" alt="Friendly Robot" class="robot-img">
+
